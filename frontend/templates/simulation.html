@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Surgical Simulation - SurgSim Pro</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/simulation.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="simulation-body">
+    <div class="simulation-container">
+        <!-- Top Control Bar -->
+        <header class="simulation-header">
+            <div class="header-left">
+                <button class="btn btn-secondary" onclick="pauseSimulation()">
+                    <i class="fas fa-pause"></i> Pause
+                </button>
+                <button class="btn btn-danger" onclick="exitSimulation()">
+                    <i class="fas fa-times"></i> Exit
+                </button>
+            </div>
+            <div class="header-center">
+                <h2 id="procedure-title">Laparoscopic Cholecystectomy</h2>
+                <div class="progress-indicator">
+                    <span id="current-step">Step 1</span> of <span id="total-steps">6</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="timer">
+                    <i class="fas fa-clock"></i>
+                    <span id="simulation-timer">00:00:00</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Simulation Area -->
+        <div class="simulation-workspace">
+            <!-- Left Panel - Patient Info & Vitals -->
+            <div class="left-panel">
+                <!-- Patient Information -->
+                <div class="panel-section patient-info">
+                    <h3><i class="fas fa-user"></i> Patient Information</h3>
+                    <div class="patient-details" id="patient-details">
+                        <div class="detail-row">
+                            <span class="label">Age:</span>
+                            <span class="value" id="patient-age">45</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="label">Gender:</span>
+                            <span class="value" id="patient-gender">Female</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="label">BMI:</span>
+                            <span class="value" id="patient-bmi">28.5</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="label">Medical History:</span>
+                            <span class="value" id="patient-history">Diabetes, HTN</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Vital Signs Monitor -->
+                <div class="panel-section vitals-monitor">
+                    <h3><i class="fas fa-heartbeat"></i> Vital Signs</h3>
+                    <div class="vitals-display">
+                        <div class="vital-item">
+                            <div class="vital-label">HR</div>
+                            <div class="vital-value" id="heart-rate">78</div>
+                            <div class="vital-unit">bpm</div>
+                        </div>
+                        <div class="vital-item">
+                            <div class="vital-label">BP</div>
+                            <div class="vital-value" id="blood-pressure">120/80</div>
+                            <div class="vital-unit">mmHg</div>
+                        </div>
+                        <div class="vital-item">
+                            <div class="vital-label">SpO2</div>
+                            <div class="vital-value" id="oxygen-sat">98</div>
+                            <div class="vital-unit">%</div>
+                        </div>
+                        <div class="vital-item">
+                            <div class="vital-label">Temp</div>
+                            <div class="vital-value" id="temperature">36.8</div>
+                            <div class="vital-unit">°C</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Alerts Panel -->
+                <div class="panel-section alerts-panel">
+                    <h3><i class="fas fa-exclamation-triangle"></i> Alerts</h3>
+                    <div id="alerts-container">
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle"></i>
+                            Simulation ready to begin
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Center Panel - Surgical View -->
+            <div class="center-panel">
+                <!-- Surgical Field -->
+                <div class="surgical-field">
+                    <div class="field-header">
+                        <h3>Surgical Field</h3>
+                        <div class="field-controls">
+                            <button class="control-btn" onclick="adjustCamera('zoom-in')">
+                                <i class="fas fa-search-plus"></i>
+                            </button>
+                            <button class="control-btn" onclick="adjustCamera('zoom-out')">
+                                <i class="fas fa-search-minus"></i>
+                            </button>
+                            <button class="control-btn" onclick="adjustCamera('rotate')">
+                                <i class="fas fa-redo"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="surgical-viewport" id="surgical-viewport">
+                        <!-- 3D surgical view will be rendered here -->
+                        <canvas id="surgical-canvas" width="800" height="600"></canvas>
+                        
+                        <!-- Interactive Hotspots -->
+                        <div class="hotspot" id="hotspot-1" style="top: 30%; left: 40%;" 
+                             onclick="selectAnatomicalStructure('gallbladder')">
+                            <div class="hotspot-marker"></div>
+                            <div class="hotspot-label">Gallbladder</div>
+                        </div>
+                        <div class="hotspot" id="hotspot-2" style="top: 45%; left: 35%;"
+                             onclick="selectAnatomicalStructure('hepatic-artery')">
+                            <div class="hotspot-marker"></div>
+                            <div class="hotspot-label">Hepatic Artery</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step Instructions -->
+                <div class="step-instructions">
+                    <div class="instruction-header">
+                        <h3 id="step-title">Patient Preparation</h3>
+                        <div class="step-timer">
+                            <i class="fas fa-stopwatch"></i>
+                            <span id="step-timer">05:30</span>
+                        </div>
+                    </div>
+                    <div class="instruction-content">
+                        <p id="step-description">Position patient supine, prep and drape surgical site</p>
+                        <div class="critical-points" id="critical-points">
+                            <h4>Critical Points:</h4>
+                            <ul>
+                                <li>Proper patient positioning</li>
+                                <li>Sterile field maintenance</li>
+                                <li>Antibiotic prophylaxis</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel - Tools & Progress -->
+            <div class="right-panel">
+                <!-- Instrument Panel -->
+                <div class="panel-section instruments-panel">
+                    <h3><i class="fas fa-tools"></i> Instruments</h3>
+                    <div class="instruments-grid" id="instruments-grid">
+                        <div class="instrument-item" data-instrument="scalpel">
+                            <div class="instrument-icon">
+                                <i class="fas fa-cut"></i>
+                            </div>
+                            <div class="instrument-name">Scalpel</div>
+                        </div>
+                        <div class="instrument-item" data-instrument="grasper">
+                            <div class="instrument-icon">
+                                <i class="fas fa-hand-paper"></i>
+                            </div>
+                            <div class="instrument-name">Grasper</div>
+                        </div>
+                        <div class="instrument-item" data-instrument="clip-applier">
+                            <div class="instrument-icon">
+                                <i class="fas fa-paperclip"></i>
+                            </div>
+                            <div class="instrument-name">Clip Applier</div>
+                        </div>
+                        <div class="instrument-item" data-instrument="cautery">
+                            <div class="instrument-icon">
+                                <i class="fas fa-bolt"></i>
+                            </div>
+                            <div class="instrument-name">Electrocautery</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Progress Tracking -->
+                <div class="panel-section progress-tracking">
+                    <h3><i class="fas fa-list-check"></i> Progress</h3>
+                    <div class="steps-list" id="steps-progress">
+                        <div class="step-item completed">
+                            <div class="step-number">1</div>
+                            <div class="step-info">
+                                <div class="step-name">Patient Prep</div>
+                                <div class="step-status">Completed</div>
+                            </div>
+                            <div class="step-score">85%</div>
+                        </div>
+                        <div class="step-item active">
+                            <div class="step-number">2</div>
+                            <div class="step-info">
+                                <div class="step-name">Trocar Placement</div>
+                                <div class="step-status">In Progress</div>
+                            </div>
+                            <div class="step-score">--</div>
+                        </div>
+                        <div class="step-item">
+                            <div class="step-number">3</div>
+                            <div class="step-info">
+                                <div class="step-name">Diagnostic Scope</div>
+                                <div class="step-status">Pending</div>
+                            </div>
+                            <div class="step-score">--</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="panel-section action-buttons">
+                    <button class="btn btn-primary action-btn" onclick="completeStep()">
+                        <i class="fas fa-check"></i> Complete Step
+                    </button>
+                    <button class="btn btn-warning action-btn" onclick="requestHelp()">
+                        <i class="fas fa-question-circle"></i> Request Help
+                    </button>
+                    <button class="btn btn-danger action-btn" onclick="reportComplication()">
+                        <i class="fas fa-exclamation"></i> Report Issue
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Feedback Modal -->
+        <div id="feedback-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Step Assessment</h2>
+                </div>
+                <div class="modal-body">
+                    <div class="assessment-summary" id="assessment-summary">
+                        <!-- Assessment results will be displayed here -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" onclick="continueToNextStep()">
+                        Continue to Next Step
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Complication Modal -->
+        <div id="complication-modal" class="modal">
+            <div class="modal-content complication-content">
+                <div class="modal-header">
+                    <h2><i class="fas fa-exclamation-triangle"></i> Complication Encountered</h2>
+                </div>
+                <div class="modal-body">
+                    <div class="complication-details" id="complication-details">
+                        <!-- Complication details will be displayed here -->
+                    </div>
+                    <div class="management-options" id="management-options">
+                        <!-- Management options will be displayed here -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="complication-timer">
+                        Time to respond: <span id="complication-timer">05:00</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/simulation.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/3d-renderer.js') }}"></script>
+</body>
+</html>

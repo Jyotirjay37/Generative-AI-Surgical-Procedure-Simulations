@@ -1,0 +1,17 @@
+[Unit]
+Description=Surgical Simulation Platform
+After=network.target
+
+[Service]
+User=www-data
+Group=www-data
+WorkingDirectory=/opt/surgical-simulation-platform/backend
+Environment=PATH=/opt/surgical-simulation-platform/venv/bin
+Environment=FLASK_ENV=production
+Environment=PYTHONPATH=/opt/surgical-simulation-platform
+ExecStart=/opt/surgical-simulation-platform/venv/bin/gunicorn --config gunicorn.conf.py app:app
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

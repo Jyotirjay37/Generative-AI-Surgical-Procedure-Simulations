@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Surgical Simulation Platform</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Alert Container -->
+        <div id="alerts-container" class="alerts-container"></div>
+        
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-user-md"></i>
+                    <h1>SurgSim Pro</h1>
+                </div>
+                <nav class="nav-menu">
+                    <a href="#dashboard" class="nav-link active">Dashboard</a>
+                    <a href="#procedures" class="nav-link">Procedures</a>
+                    <a href="#statistics" class="nav-link">Statistics</a>
+                    <a href="#settings" class="nav-link">Settings</a>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="section active">
+                <div class="dashboard-grid">
+                    <!-- Quick Start Card -->
+                    <div class="card quick-start-card">
+                        <div class="card-header">
+                            <h2><i class="fas fa-play-circle"></i> Quick Start</h2>
+                        </div>
+                        <div class="card-content">
+                            <p>Begin a new surgical simulation</p>
+                            <button class="btn btn-primary" onclick="showProcedureSelection()">
+                                Start New Simulation
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Recent Activity -->
+                    <div class="card activity-card">
+                        <div class="card-header">
+                            <h2><i class="fas fa-history"></i> Recent Activity</h2>
+                        </div>
+                        <div class="card-content">
+                            <div id="recent-simulations">
+                                <div class="activity-item">
+                                    <div class="activity-icon">
+                                        <i class="fas fa-check-circle"></i>
+                                    </div>
+                                    <div class="activity-details">
+                                        <h4>Laparoscopic Cholecystectomy</h4>
+                                        <p>Completed • Score: 85% • 2 hours ago</p>
+                                    </div>
+                                </div>
+                                <div class="activity-item">
+                                    <div class="activity-icon">
+                                        <i class="fas fa-clock"></i>
+                                    </div>
+                                    <div class="activity-details">
+                                        <h4>Appendectomy</h4>
+                                        <p>In Progress • Step 3/5 • Started 30 min ago</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Performance Overview -->
+                    <div class="card performance-card">
+                        <div class="card-header">
+                            <h2><i class="fas fa-chart-line"></i> Performance Overview</h2>
+                        </div>
+                        <div class="card-content">
+                            <div class="performance-stats">
+                                <div class="stat-item">
+                                    <div class="stat-value" id="avg-score">82.5%</div>
+                                    <div class="stat-label">Average Score</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value" id="completed-sims">15</div>
+                                    <div class="stat-label">Completed</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value" id="total-time">24h</div>
+                                    <div class="stat-label">Total Time</div>
+                                </div>
+                            </div>
+                            <div class="chart-container">
+                                <canvas id="performance-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Learning Progress -->
+                    <div class="card progress-card">
+                        <div class="card-header">
+                            <h2><i class="fas fa-graduation-cap"></i> Learning Progress</h2>
+                        </div>
+                        <div class="card-content">
+                            <div class="progress-items">
+                                <div class="progress-item">
+                                    <div class="progress-header">
+                                        <span>Basic Laparoscopy</span>
+                                        <span class="progress-percent">90%</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 90%"></div>
+                                    </div>
+                                </div>
+                                <div class="progress-item">
+                                    <div class="progress-header">
+                                        <span>Advanced Techniques</span>
+                                        <span class="progress-percent">65%</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 65%"></div>
+                                    </div>
+                                </div>
+                                <div class="progress-item">
+                                    <div class="progress-header">
+                                        <span>Complication Management</span>
+                                        <span class="progress-percent">45%</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 45%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Procedures Section -->
+            <section id="procedures" class="section">
+                <div class="section-header">
+                    <h2>Available Procedures</h2>
+                    <button class="btn btn-secondary" onclick="refreshProcedures()">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                </div>
+                <div class="procedures-grid" id="procedures-list">
+                    <!-- Procedures will be loaded dynamically -->
+                </div>
+            </section>
+
+            <!-- Statistics Section -->
+            <section id="statistics" class="section">
+                <div class="section-header">
+                    <h2>Performance Statistics</h2>
+                </div>
+                <div class="stats-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Score Distribution</h3>
+                        </div>
+                        <div class="card-content">
+                            <canvas id="score-distribution-chart" width="400" height="300"></canvas>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Procedure Mastery</h3>
+                        </div>
+                        <div class="card-content">
+                            <canvas id="procedure-mastery-chart" width="400" height="300"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Procedure Selection Modal -->
+        <div id="procedure-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Select Procedure & Configuration</h2>
+                    <button class="modal-close" onclick="closeProcedureModal()">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="config-grid">
+                        <!-- Procedure Selection -->
+                        <div class="config-section">
+                            <label for="procedure-select">Procedure Type</label>
+                            <select id="procedure-select" class="form-control">
+                                <option value="">Select a procedure...</option>
+                            </select>
+                        </div>
+
+                        <!-- Difficulty Level -->
+                        <div class="config-section">
+                            <label for="difficulty-select">Difficulty Level</label>
+                            <select id="difficulty-select" class="form-control">
+                                <option value="beginner">Beginner</option>
+                                <option value="intermediate">Intermediate</option>
+                                <option value="advanced">Advanced</option>
+                                <option value="expert">Expert</option>
+                            </select>
+                        </div>
+
+                        <!-- Patient Demographics -->
+                        <div class="config-section">
+                            <label>Patient Demographics</label>
+                            <div class="demographic-controls">
+                                <div class="input-group">
+                                    <label for="age-range">Age Range</label>
+                                    <div class="range-inputs">
+                                        <input type="number" id="age-min" value="20" min="18" max="90">
+                                        <span>to</span>
+                                        <input type="number" id="age-max" value="80" min="18" max="90">
+                                    </div>
+                                </div>
+                                <div class="input-group">
+                                    <label for="gender-select">Gender</label>
+                                    <select id="gender-select" class="form-control">
+                                        <option value="random">Random</option>
+                                        <option value="male">Male</option>
+                                        <option value="female">Female</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Learning Objectives -->
+                        <div class="config-section">
+                            <label>Learning Objectives</label>
+                            <div class="objectives-grid" id="learning-objectives">
+                                <!-- Will be populated based on procedure selection -->
+                            </div>
+                        </div>
+
+                        <!-- Advanced Options -->
+                        <div class="config-section">
+                            <label>Advanced Options</label>
+                            <div class="checkbox-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="complications-enabled" checked>
+                                    <span class="checkmark"></span>
+                                    Enable Complications
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="real-time-feedback">
+                                    <span class="checkmark"></span>
+                                    Real-time Feedback
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="time-pressure">
+                                    <span class="checkmark"></span>
+                                    Time Pressure Mode
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" onclick="closeProcedureModal()">Cancel</button>
+                    <button class="btn btn-primary" onclick="startSimulation()" id="start-simulation-btn">
+                        <i class="fas fa-play"></i> Start Simulation
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading Overlay -->
+        <div id="loading-overlay" class="loading-overlay hidden">
+            <div class="loading-content">
+                <div class="loading-spinner"></div>
+                <h3>Generating Simulation...</h3>
+                <p>Creating patient profile and procedural scenario</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+</body>
+</html>

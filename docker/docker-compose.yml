@@ -1,0 +1,76 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=production
+      - DATABASE_URL=sqlite:///database/surgical_simulations.db
+      - SECRET_KEY=${SECRET_KEY:-your-secret-key-here}
+    volumes:
+      - ./database:/app/database
+      - ./logs:/app/logs
+      - ./backups:/app/backups
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    depends_on:
+      - redis
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./deployment/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./frontend/static:/usr/share/nginx/html/static
+      - ./ssl:/etc/nginx/ssl
+    depends_on:
+      - web
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Optional: PostgreSQL for production
+  # postgres:
+  #   image: postgres:13-alpine
+  #   environment:
+  #     POSTGRES_DB: surgical_sim
+  #     POSTGRES_USER: surgicalsim
+  #     POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-your-password}
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+  #   restart: unless-stopped
+  #   healthcheck:
+  #     test: ["CMD-SHELL", "pg_isready -U surgicalsim"]
+  #     interval: 30s
+  #     timeout: 10s
+  #     retries: 3
+
+volumes:
+  redis_data:
+  # postgres_data:

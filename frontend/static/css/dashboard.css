@@ -1,0 +1,511 @@
+/* Dashboard Specific Styles */
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: var(--spacing-xl);
+    margin-bottom: var(--spacing-xl);
+    max-height: calc(100vh - 200px);
+    overflow-y: auto;
+}
+
+/* Quick Start Card */
+.quick-start-card {
+    background: linear-gradient(135deg, var(--medical-green), #047857);
+    color: var(--clean-white);
+    border: none;
+}
+
+.quick-start-card .card-header {
+    background: transparent;
+    border-bottom-color: rgba(255, 255, 255, 0.2);
+}
+
+.quick-start-card .card-header h2 {
+    color: var(--clean-white);
+}
+
+.quick-start-card .card-header i {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.quick-start-card .card-content {
+    text-align: center;
+}
+
+.quick-start-card .card-content p {
+    margin-bottom: var(--spacing-lg);
+    opacity: 0.9;
+}
+
+.quick-start-card .btn-primary {
+    background: var(--clean-white);
+    color: var(--medical-green);
+    font-weight: 600;
+}
+
+.quick-start-card .btn-primary:hover {
+    background: var(--soft-gray);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+/* Activity Card */
+.activity-card {
+    grid-row: span 2;
+}
+
+.activity-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--spacing-md);
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+}
+
+.activity-item:hover {
+    background: var(--soft-gray);
+    border-color: var(--border-gray);
+    transform: translateX(5px);
+}
+
+.activity-item:last-child {
+    margin-bottom: 0;
+}
+
+.activity-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    color: var(--clean-white);
+}
+
+.activity-item:first-child .activity-icon {
+    background: linear-gradient(135deg, var(--success-green), #059669);
+}
+
+.activity-item:nth-child(2) .activity-icon {
+    background: linear-gradient(135deg, var(--warning-orange), #f59e0b);
+}
+
+.activity-details h4 {
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: var(--spacing-xs);
+}
+
+.activity-details p {
+    color: var(--text-light);
+    font-size: 0.875rem;
+}
+
+/* Performance Card */
+.performance-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
+}
+
+.stat-item {
+    text-align: center;
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+    background: linear-gradient(135deg, var(--soft-gray), #f1f5f9);
+    transition: all 0.3s ease;
+}
+
+.stat-item:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+}
+
+.stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--primary-blue);
+    margin-bottom: var(--spacing-xs);
+}
+
+.stat-label {
+    font-size: 0.875rem;
+    color: var(--text-light);
+    font-weight: 500;
+}
+
+/* Chart Container */
+.chart-container {
+    height: 200px;
+    width: 100%;
+    margin-top: var(--spacing-md);
+    position: relative;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+
+.chart-container canvas {
+    max-height: 100%;
+    width: 100% !important;
+}
+
+#performance-chart {
+    width: 100% !important;
+    height: 100% !important;
+    border-radius: var(--radius-md);
+}
+
+/* Progress Card */
+.progress-items {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+}
+
+.progress-item {
+    background: var(--soft-gray);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+    transition: all 0.3s ease;
+}
+
+.progress-item:hover {
+    background: #f1f5f9;
+    transform: translateX(5px);
+}
+
+.progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-sm);
+}
+
+.progress-header span:first-child {
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.progress-percent {
+    font-weight: 700;
+    color: var(--primary-blue);
+}
+
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background: var(--border-gray);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--medical-green), var(--success-green));
+    border-radius: var(--radius-sm);
+    transition: width 1s ease;
+    position: relative;
+}
+
+.progress-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+/* Procedures Grid */
+.procedures-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: var(--spacing-lg);
+}
+
+.procedure-card {
+    background: var(--clean-white);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+    transition: all 0.3s ease;
+    border: 1px solid var(--border-gray);
+    cursor: pointer;
+}
+
+.procedure-card:hover {
+    box-shadow: var(--shadow-xl);
+    transform: translateY(-5px);
+    border-color: var(--primary-blue);
+}
+
+.procedure-header {
+    padding: var(--spacing-lg);
+    background: linear-gradient(135deg, var(--primary-blue), #3b82f6);
+    color: var(--clean-white);
+}
+
+.procedure-header h3 {
+    font-weight: 600;
+    margin-bottom: var(--spacing-xs);
+}
+
+.procedure-category {
+    font-size: 0.875rem;
+    opacity: 0.9;
+}
+
+.procedure-content {
+    padding: var(--spacing-lg);
+}
+
+.procedure-details {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-lg);
+}
+
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.detail-row .label {
+    color: var(--text-light);
+    font-size: 0.875rem;
+}
+
+.detail-row .value {
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.difficulty-badges {
+    display: flex;
+    gap: var(--spacing-xs);
+    flex-wrap: wrap;
+    margin-bottom: var(--spacing-lg);
+}
+
+.difficulty-badge {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--radius-sm);
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
+.difficulty-badge.beginner {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.difficulty-badge.intermediate {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.difficulty-badge.advanced {
+    background: #fecaca;
+    color: #991b1b;
+}
+
+.difficulty-badge.expert {
+    background: #e0e7ff;
+    color: #3730a3;
+}
+
+/* Statistics Grid */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: var(--spacing-xl);
+}
+
+/* Section Headers */
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-xl);
+    padding-bottom: var(--spacing-md);
+    border-bottom: 2px solid var(--border-gray);
+}
+
+.section-header h2 {
+    font-size: 1.875rem;
+    font-weight: 700;
+    color: var(--text-dark);
+}
+
+/* Configuration Modal Specific Styles */
+.config-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--spacing-xl);
+}
+
+.config-section {
+    background: var(--soft-gray);
+    padding: var(--spacing-lg);
+    border-radius: var(--radius-md);
+}
+
+.config-section label {
+    display: block;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: var(--spacing-sm);
+}
+
+.demographic-controls {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.range-inputs {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.range-inputs input {
+    flex: 1;
+}
+
+.range-inputs span {
+    color: var(--text-light);
+    font-weight: 500;
+}
+
+.objectives-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--spacing-sm);
+}
+
+.objective-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm);
+    border-radius: var(--radius-sm);
+    background: var(--clean-white);
+    border: 1px solid var(--border-gray);
+    transition: all 0.3s ease;
+}
+
+.objective-item:hover {
+    border-color: var(--primary-blue);
+    background: #f8fafc;
+}
+
+.checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.3s ease;
+}
+
+.checkbox-label:hover {
+    color: var(--primary-blue);
+}
+
+.checkbox-label input[type="checkbox"] {
+    display: none;
+}
+
+.checkmark {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--border-gray);
+    border-radius: var(--radius-sm);
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.checkbox-label input[type="checkbox"]:checked + .checkmark {
+    background: var(--primary-blue);
+    border-color: var(--primary-blue);
+}
+
+.checkbox-label input[type="checkbox"]:checked + .checkmark::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--clean-white);
+    font-weight: 700;
+    font-size: 0.875rem;
+}
+
+/* Responsive Dashboard Adjustments */
+@media (max-width: 1200px) {
+    .dashboard-grid {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
+    
+    .config-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .performance-stats {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-md);
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .section-header {
+        flex-direction: column;
+        gap: var(--spacing-md);
+        align-items: stretch;
+    }
+    
+    .demographic-controls {
+        gap: var(--spacing-sm);
+    }
+    
+    .range-inputs {
+        flex-direction: column;
+    }
+}

@@ -1,0 +1,524 @@
+/* Simulation Interface Styles */
+.simulation-container {
+    display: flex;
+    height: 100vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.simulation-sidebar {
+    width: 350px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-right: 1px solid rgba(255, 255, 255, 0.2);
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+.simulation-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.simulation-viewport {
+    flex: 1;
+    background: #1a1a1a;
+    position: relative;
+    overflow: hidden;
+}
+
+.simulation-controls {
+    height: 80px;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    gap: 15px;
+}
+
+/* Patient Information Panel */
+.patient-panel {
+    padding: 20px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.patient-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.patient-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    margin-right: 15px;
+}
+
+.patient-info h3 {
+    margin: 0 0 5px 0;
+    color: #333;
+    font-size: 18px;
+}
+
+.patient-info p {
+    margin: 0;
+    color: #666;
+    font-size: 14px;
+}
+
+.vitals-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.vital-item {
+    background: #f8f9fa;
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.vital-label {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.vital-value {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+}
+
+.vital-normal { color: #28a745; }
+.vital-warning { color: #ffc107; }
+.vital-critical { color: #dc3545; }
+
+/* Procedure Information */
+.procedure-panel {
+    padding: 20px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.procedure-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.procedure-icon {
+    width: 40px;
+    height: 40px;
+    background: #007bff;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    margin-right: 15px;
+}
+
+.procedure-info h4 {
+    margin: 0 0 5px 0;
+    color: #333;
+}
+
+.procedure-info p {
+    margin: 0;
+    color: #666;
+    font-size: 14px;
+}
+
+.difficulty-badge {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.difficulty-beginner { background: #d4edda; color: #155724; }
+.difficulty-intermediate { background: #fff3cd; color: #856404; }
+.difficulty-advanced { background: #f8d7da; color: #721c24; }
+
+/* Step Navigation */
+.steps-panel {
+    flex: 1;
+    padding: 20px;
+}
+
+.steps-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.steps-header h4 {
+    margin: 0;
+    color: #333;
+}
+
+.step-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.step-item {
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.step-item:hover {
+    background: #f8f9fa;
+    transform: translateX(5px);
+}
+
+.step-item.active {
+    background: #e3f2fd;
+    border-color: #2196f3;
+}
+
+.step-item.completed {
+    background: #e8f5e8;
+    border-color: #4caf50;
+}
+
+.step-number {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #ddd;
+    color: #666;
+    text-align: center;
+    line-height: 24px;
+    font-size: 12px;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.step-item.active .step-number {
+    background: #2196f3;
+    color: white;
+}
+
+.step-item.completed .step-number {
+    background: #4caf50;
+    color: white;
+}
+
+.step-title {
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.step-description {
+    font-size: 12px;
+    color: #666;
+}
+
+/* Simulation Viewport */
+.viewport-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: #000;
+}
+
+.simulation-canvas {
+    width: 100%;
+    height: 100%;
+    background: #1a1a1a;
+}
+
+.viewport-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+}
+
+.viewport-info {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.viewport-timer {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* Control Buttons */
+.control-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.control-primary {
+    background: #007bff;
+    color: white;
+}
+
+.control-primary:hover {
+    background: #0056b3;
+    transform: translateY(-2px);
+}
+
+.control-secondary {
+    background: #6c757d;
+    color: white;
+}
+
+.control-secondary:hover {
+    background: #545b62;
+}
+
+.control-success {
+    background: #28a745;
+    color: white;
+}
+
+.control-success:hover {
+    background: #1e7e34;
+}
+
+.control-danger {
+    background: #dc3545;
+    color: white;
+}
+
+.control-danger:hover {
+    background: #c82333;
+}
+
+/* Tool Selection */
+.tool-panel {
+    position: absolute;
+    bottom: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 12px;
+    padding: 15px;
+    display: flex;
+    gap: 10px;
+}
+
+.tool-button {
+    width: 50px;
+    height: 50px;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+}
+
+.tool-button:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.1);
+}
+
+.tool-button.active {
+    border-color: #007bff;
+    background: rgba(0, 123, 255, 0.3);
+}
+
+/* Feedback Panel */
+.feedback-panel {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    width: 300px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+}
+
+.feedback-panel.show {
+    transform: translateY(0);
+}
+
+.feedback-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.feedback-header h4 {
+    margin: 0;
+    color: #333;
+}
+
+.feedback-close {
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    color: #666;
+}
+
+.feedback-content {
+    color: #333;
+    line-height: 1.5;
+}
+
+.feedback-score {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 15px 0;
+}
+
+.score-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+}
+
+.score-excellent { background: #28a745; }
+.score-good { background: #17a2b8; }
+.score-fair { background: #ffc107; }
+.score-poor { background: #dc3545; }
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .simulation-sidebar {
+        width: 300px;
+    }
+}
+
+@media (max-width: 768px) {
+    .simulation-container {
+        flex-direction: column;
+    }
+    
+    .simulation-sidebar {
+        width: 100%;
+        height: 200px;
+        order: 2;
+    }
+    
+    .simulation-main {
+        order: 1;
+    }
+    
+    .tool-panel {
+        bottom: 20px;
+        left: 20px;
+        right: 20px;
+        transform: none;
+        justify-content: center;
+    }
+    
+    .feedback-panel {
+        width: calc(100% - 40px);
+        right: 20px;
+        left: 20px;
+    }
+}
+
+/* Animation Classes */
+.fade-in {
+    animation: fadeIn 0.5s ease-in;
+}
+
+.slide-up {
+    animation: slideUp 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* Loading States */
+.loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-top: 4px solid #007bff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
